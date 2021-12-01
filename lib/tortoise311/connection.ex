@@ -429,11 +429,11 @@ defmodule Tortoise311.Connection do
         {:stop, {:connection_failed, reason}, state}
 
       {:error, reason} ->
-        Logger.warn(
-          "[Tortoise311] Connection failed: #{inspect(reason)}, #{inspect(summarize_state(state))}"
-        )
-
         {timeout, state} = Map.get_and_update(state, :backoff, &Backoff.next/1)
+
+        Logger.warn(
+          "[Tortoise311] Connection failed: #{inspect(reason)}, #{inspect(summarize_state(state))}. Reconnecting in #{timeout}"
+        )
 
         case categorize_error(reason) do
           :connectivity ->
