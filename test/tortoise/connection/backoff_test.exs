@@ -10,9 +10,7 @@ defmodule Tortoise311.Connection.BackoffTest do
     backoff = Backoff.new(min_interval: 100, max_interval: 300)
     assert {^min, backoff} = Backoff.next(backoff)
     {_, backoff} = Backoff.next(backoff)
-    assert {^max, backoff} = Backoff.next(backoff)
-    # should roll back to min interval now
-    assert {^min, _} = Backoff.next(backoff)
+    assert {^max, _} = Backoff.next(backoff)
   end
 
   test "reset" do
