@@ -53,7 +53,7 @@ defmodule Tortoise311.EventsTest do
 
       # the subscriber should receive the connection and unregister
       # itself from the connection event
-      assert_receive {:received, ^connection}
+      assert_receive {:received, ^connection}, 1_000
       assert [] = Registry.keys(Tortoise311.Events, child)
     end
   end
@@ -82,7 +82,7 @@ defmodule Tortoise311.EventsTest do
         end)
 
       # make sure the child process is ready
-      assert_receive :ready
+      assert_receive :ready, 1_000
 
       # dispatch the connection
       connection = {context.transport, context.client}
@@ -90,13 +90,13 @@ defmodule Tortoise311.EventsTest do
 
       # the subscriber should receive the connection and it should
       # still be registered for new connections
-      assert_receive {:received, ^connection}
+      assert_receive {:received, ^connection}, 1_000
       assert [:connection] = Registry.keys(Tortoise311.Events, child)
 
       context = run_setup(context, :setup_connection)
       new_connection = {context.transport, context.client}
       :ok = Tortoise311.Events.dispatch(context.client_id, :connection, new_connection)
-      assert_receive {:received, ^new_connection}
+      assert_receive {:received, ^new_connection}, 1_000
       assert [:connection] = Registry.keys(Tortoise311.Events, child)
     end
   end
