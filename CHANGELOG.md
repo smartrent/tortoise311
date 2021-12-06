@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.1 - 2021-12-06
+
+- The default timeout is no longer :infinity but 60 secs
+- Backoffs on failed connection is monotonic (not cyclical)
+
 ## 0.11.0 - 2021-11-19
 
 - Same as 0.10.5 but with correct semantic versioning
