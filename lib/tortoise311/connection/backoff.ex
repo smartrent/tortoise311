@@ -20,8 +20,8 @@ defmodule Tortoise311.Connection.Backoff do
     {current, %State{state | value: current}}
   end
 
-  def next(%State{value: value} = state) do
-    current = min(value * 2, state.max_interval)
+  def next(%State{} = state) do
+    current = min(state.value * 2, state.max_interval)
     {current, %State{state | value: current}}
   end
 
