@@ -7,6 +7,8 @@ defmodule Tortoise311.Connection.Inflight do
 
   use GenStateMachine
 
+  require Logger
+
   @enforce_keys [:client_id]
   defstruct client_id: nil, pending: %{}, order: []
 
@@ -244,7 +246,8 @@ defmodule Tortoise311.Connection.Inflight do
       {:keep_state, data, next_actions}
     else
       :error ->
-        {:stop, {:protocol_violation, :unknown_identifier}, data}
+        Logger.warn("[Tortoise311] Ignoring response with unknown identifier: #{inspect(update)}")
+        :keep_state_and_data
 
       {:error, reason} ->
         {:stop, reason, data}
@@ -292,6 +295,14 @@ defmodule Tortoise311.Connection.Inflight do
     case apply(transport, :send, [socket, Package.encode(package)]) do
       :ok ->
         {:keep_state, handle_next(track, data)}
+
+      {:error, :closed} ->
+        Logger.warn(
+          "[Tortoise311] Transport #{inspect(transport)} is closed. Assuming disconnected. Retry execution when reconnected."
+        )
+
+        next_actions = [{:next_event, :internal, {:execute, track}}]
+        {:next_state, :disconnected, data, next_actions}
     end
   end
 
