@@ -361,17 +361,14 @@ defmodule Tortoise311.Connection.Inflight do
   # Assign a random identifier to the tracked package; this will make
   # sure we pick a random number that is not in use
   defp assign_identifier(%{identifier: nil} = package, pending) do
-    case :crypto.strong_rand_bytes(2) do
-      <<0, 0>> ->
-        # an identifier cannot be zero
-        assign_identifier(package, pending)
+    # The identifier can't be zero. The :rand.uniform call below guarantees
+    # a return value >= 1 and <= 65535, so no check for zero is needed.
+    identifier = :rand.uniform(65535)
 
-      <<identifier::integer-size(16)>> ->
-        unless Map.has_key?(pending, identifier) do
-          {:ok, %{package | identifier: identifier}}
-        else
-          assign_identifier(package, pending)
-        end
+    unless Map.has_key?(pending, identifier) do
+      {:ok, %{package | identifier: identifier}}
+    else
+      assign_identifier(package, pending)
     end
   end
 
