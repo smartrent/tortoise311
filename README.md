@@ -122,7 +122,7 @@ dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:tortoise311, "~> 0.10"}
+    {:tortoise311, "~> 0.11"}
   ]
 end
 ```

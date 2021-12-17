@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.2 - 2021-12-17
+
+- Fixed crashes that could happen when the broker reconnects
+- No longer uses strong random as it unnecessarily depleted entropy pool
+
 ## 0.11.1 - 2021-12-06
 
 - The default timeout is no longer :infinity but 60 secs
