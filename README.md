@@ -113,6 +113,17 @@ defmodule Tortoise311.Handler.Example do
 end
 ```
 
+## Telemetry
+
+Tortoise311 produces telemetry about how many bytes are sent to and received from the MQTT server.
+
+You can choose to register any or all of the following metrics in the Application.start/2 of your telemetry-enabled application:
+
+```elixir
+      Telemetry.Metrics.sum("tortoise311.connection.tx_bytes")
+      Telemetry.Metrics.sum("tortoise311.connection.rx_bytes")
+```
+
 ## Installation
 
 Tortoise311 can be installed by adding `tortoise311` to your list of
@@ -128,6 +139,15 @@ end
 
 Documentation should be available at
 [https://hexdocs.pm/tortoise311](https://hexdocs.pm/tortoise311).
+
+## Development
+
+To start developing, run the following commands:
+
+```elixir
+mix deps.get
+MIX_ENV=test mix test
+```
 
 ## Building documentation
 

@@ -43,6 +43,7 @@ defmodule Tortoise311.MixProject do
   defp deps do
     [
       {:gen_state_machine, "~> 2.0 or ~> 3.0"},
+      {:telemetry, "~> 1.0"},
       {:dialyxir, "~> 1.1.0", only: :dev, runtime: false},
       {:excoveralls, "~> 0.10", only: :test},
       {:ex_doc, "~> 0.19", only: :docs, runtime: false},
