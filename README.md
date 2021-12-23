@@ -129,16 +129,6 @@ end
 Documentation should be available at
 [https://hexdocs.pm/tortoise311](https://hexdocs.pm/tortoise311).
 
-## Development
-
-To start developing, run the following commands:
-
-``` elixir
-mix deps.get
-MIX_ENV=test mix eqc.install --mini
-mix test
-```
-
 ## Building documentation
 
 To build the documentation run the following command in a terminal emulator:
