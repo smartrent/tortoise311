@@ -12,23 +12,21 @@ messages to the broker.
 
 Amongst other things Tortoise311 supports:
 
-  - Keeping a connection to a MQTT server (version 3.1.1)
-  - Retry connecting with incremental back-off
-  - Publishing and subscribing to topics of QoS 0, 1, and 2
-  - Connections support last will message
-  - Connecting via TCP and SSL
-  - The fundamentals are there, but some of the API's might change in
-    the near future
-  - A PubSub system where one can listen to system events. For now
-    connection status and ping response times can be subscribed for
-    statistics and administrative purposes.
+* Keeping a connection to a MQTT server (version 3.1.1)
+* Retry connecting with incremental back-off
+* Publishing and subscribing to topics of QoS 0, 1, and 2
+* Connections support last will message
+* Connecting via TCP and SSL
+* The fundamentals are there, but some of the API's might change in
+* the near future
+* A PubSub system where one can listen to system events. For now connection status and ping response times can be subscribed for statistics and administrative purposes.
 
 Most of the public facing interface should be in the `Tortoise311`
 module. See the GitHub issues for work in progress "known issues in
 the design", "what needs to be done", and so forth; feel free to open
 your own issues if something is confusing or broken.
 
-I would love to get some feedback and help building this thing.
+We greatly appreciate all feedback and help.
 
 ## Example
 
@@ -73,6 +71,7 @@ attacker could intercept the connection without detection!
 Look at the `connection_test.exs`-file for more examples.
 
 Example Handler
+
 ```elixir
 defmodule Tortoise311.Handler.Example do
   use Tortoise311.Handler
@@ -134,7 +133,7 @@ Documentation should be available at
 
 To start developing, run the following commands:
 
-```
+``` elixir
 mix deps.get
 MIX_ENV=test mix eqc.install --mini
 mix test
@@ -160,7 +159,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
