@@ -58,7 +58,7 @@ defmodule Tortoise311.Supervisor do
     DynamicSupervisor.start_child(supervisor, spec)
   end
 
-  @impl true
+  @impl DynamicSupervisor
   def init(_opts) do
     DynamicSupervisor.init(strategy: :one_for_one)
   end

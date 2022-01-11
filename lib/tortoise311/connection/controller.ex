@@ -102,7 +102,7 @@ defmodule Tortoise311.Connection.Controller do
   end
 
   # Server callbacks
-  @impl true
+  @impl GenServer
   def init(%State{handler: handler} = opts) do
     {:ok, _} = Tortoise311.Events.register(opts.client_id, :status)
 
@@ -112,18 +112,18 @@ defmodule Tortoise311.Connection.Controller do
     end
   end
 
-  @impl true
+  @impl GenServer
   def terminate(reason, %State{handler: handler}) do
     _ignored = Handler.execute(handler, {:terminate, reason})
     :ok
   end
 
-  @impl true
+  @impl GenServer
   def handle_call(:info, _from, state) do
     {:reply, state, state}
   end
 
-  @impl true
+  @impl GenServer
   def handle_cast({:incoming, <<package::binary>>}, state) do
     package
     |> Package.decode()
@@ -182,7 +182,7 @@ defmodule Tortoise311.Connection.Controller do
     end
   end
 
-  @impl true
+  @impl GenServer
   def handle_info({:next_action, {:subscribe, topic, opts} = action}, state) do
     {qos, opts} = Keyword.pop_first(opts, :qos, 0)
 

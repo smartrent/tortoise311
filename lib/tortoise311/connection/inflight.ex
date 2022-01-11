@@ -80,7 +80,7 @@ defmodule Tortoise311.Connection.Inflight do
   end
 
   # Server callbacks
-  @impl true
+  @impl GenStateMachine
   def init(opts) do
     client_id = Keyword.fetch!(opts, :client_id)
     initial_data = %State{client_id: client_id}
@@ -92,7 +92,7 @@ defmodule Tortoise311.Connection.Inflight do
     {:ok, :disconnected, initial_data, next_actions}
   end
 
-  @impl true
+  @impl GenStateMachine
   def handle_event(:internal, :post_init, :disconnected, data) do
     case Connection.connection(data.client_id, active: true) do
       {:ok, {_transport, _socket} = connection} ->

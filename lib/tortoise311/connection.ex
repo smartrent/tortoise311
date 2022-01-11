@@ -360,7 +360,7 @@ defmodule Tortoise311.Connection do
   end
 
   # Callbacks
-  @impl true
+  @impl GenServer
   def init(
         {transport, %Connect{client_id: client_id} = connect, backoff_opts, subscriptions, opts}
       ) do
@@ -388,14 +388,14 @@ defmodule Tortoise311.Connection do
     {:ok, state}
   end
 
-  @impl true
+  @impl GenServer
   def terminate(_reason, state) do
     :ok = Tortoise311.Registry.delete_meta(via_name(state.connect.client_id))
     :ok = Events.dispatch(state.client_id, :status, :terminated)
     :ok
   end
 
-  @impl true
+  @impl GenServer
   def handle_info(:connect, state) do
     # make sure we will not fall for a keep alive timeout while we reconnect
     # check if the will needs to be updated for each connection
@@ -512,7 +512,7 @@ defmodule Tortoise311.Connection do
     end
   end
 
-  @impl true
+  @impl GenServer
   def handle_call(:subscriptions, _from, state) do
     {:reply, state.subscriptions, state}
   end
@@ -525,7 +525,7 @@ defmodule Tortoise311.Connection do
     {:stop, :shutdown, state}
   end
 
-  @impl true
+  @impl GenServer
   def handle_cast({:subscribe, {caller_pid, ref}, subscribe, opts}, state) do
     client_id = state.connect.client_id
     timeout = Keyword.get(opts, :timeout, 5000)

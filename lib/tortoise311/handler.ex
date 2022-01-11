@@ -128,32 +128,32 @@ defmodule Tortoise311.Handler do
     quote location: :keep do
       @behaviour Tortoise311.Handler
 
-      @impl true
+      @impl Tortoise311.Handler
       def init(state) do
         {:ok, state}
       end
 
-      @impl true
+      @impl Tortoise311.Handler
       def terminate(_reason, _state) do
         :ok
       end
 
-      @impl true
+      @impl Tortoise311.Handler
       def connection(_status, state) do
         {:ok, state}
       end
 
-      @impl true
+      @impl Tortoise311.Handler
       def subscription(_status, _topic_filter, state) do
         {:ok, state}
       end
 
-      @impl true
+      @impl Tortoise311.Handler
       def handle_message(_topic, _payload, state) do
         {:ok, state}
       end
 
-      @impl true
+      @impl Tortoise311.Handler
       def last_will(state) do
         {{:ok, nil}, state}
       end
