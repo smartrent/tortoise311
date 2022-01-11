@@ -3,7 +3,7 @@ defmodule Tortoise311.App do
 
   use Application
 
-  @impl true
+  @impl Application
   def start(_type, _args) do
     # read configuration and start connections
     # start with client_id, and handler from config
