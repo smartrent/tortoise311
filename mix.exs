@@ -46,7 +46,8 @@ defmodule Tortoise311.MixProject do
       {:dialyxir, "~> 1.1.0", only: :dev, runtime: false},
       {:excoveralls, "~> 0.10", only: :test},
       {:ex_doc, "~> 0.19", only: :docs, runtime: false},
-      {:ct_helper, github: "ninenines/ct_helper", only: :test}
+      {:ct_helper, github: "ninenines/ct_helper", only: :test},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 
