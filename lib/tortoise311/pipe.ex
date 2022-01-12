@@ -20,8 +20,8 @@ defmodule Tortoise311.Pipe do
   be made when the design and implementation has stabilized.
   """
 
-  alias Tortoise311.{Package, Pipe}
   alias Tortoise311.Connection.Inflight
+  alias Tortoise311.{Package, Pipe}
 
   @default_timeout 60_000
 

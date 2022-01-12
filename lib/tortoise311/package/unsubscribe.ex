@@ -1,9 +1,9 @@
 defmodule Tortoise311.Package.Unsubscribe do
   @moduledoc false
 
-  @opcode 10
-
   alias Tortoise311.Package
+
+  @opcode 10
 
   @type topic :: binary()
 
@@ -12,6 +12,7 @@ defmodule Tortoise311.Package.Unsubscribe do
             identifier: Tortoise311.package_identifier(),
             topics: [topic]
           }
+
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 2},
             topics: [],
             identifier: nil

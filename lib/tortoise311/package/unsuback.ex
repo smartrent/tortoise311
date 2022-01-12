@@ -1,14 +1,15 @@
 defmodule Tortoise311.Package.Unsuback do
   @moduledoc false
 
-  @opcode 11
-
   alias Tortoise311.Package
+
+  @opcode 11
 
   @opaque t :: %__MODULE__{
             __META__: Package.Meta.t(),
             identifier: Tortoise311.package_identifier()
           }
+
   @enforce_keys [:identifier]
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 0b0000},
             identifier: nil

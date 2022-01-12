@@ -5,9 +5,9 @@ defmodule Tortoise311.Connection.Receiver do
 
   alias Tortoise311.Connection.Controller
   alias Tortoise311.Events
+  alias __MODULE__, as: State
 
   defstruct client_id: nil, transport: nil, socket: nil, buffer: <<>>
-  alias __MODULE__, as: State
 
   def start_link(opts) do
     client_id = Keyword.fetch!(opts, :client_id)

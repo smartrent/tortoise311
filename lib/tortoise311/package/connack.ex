@@ -1,9 +1,9 @@
 defmodule Tortoise311.Package.Connack do
   @moduledoc false
 
-  @opcode 2
-
   alias Tortoise311.Package
+
+  @opcode 2
 
   @type status :: :accepted | {:refused, refusal_reasons()}
   @type refusal_reasons ::
@@ -18,6 +18,7 @@ defmodule Tortoise311.Package.Connack do
             session_present: boolean(),
             status: status() | nil
           }
+
   @enforce_keys [:status]
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 0},
             session_present: false,

@@ -1,29 +1,30 @@
 defmodule Tortoise311.Connection.Controller do
   @moduledoc false
 
-  require Logger
+  use GenServer
 
-  alias Tortoise311.{Package, Connection, Handler}
+  alias __MODULE__, as: State
   alias Tortoise311.Connection.Inflight
+  alias Tortoise311.{Connection, Handler, Package}
 
   alias Tortoise311.Package.{
-    Connect,
     Connack,
+    Connect,
     Disconnect,
-    Publish,
+    Pingreq,
+    Pingresp,
     Puback,
+    Pubcomp,
+    Publish,
     Pubrec,
     Pubrel,
-    Pubcomp,
-    Subscribe,
     Suback,
-    Unsubscribe,
+    Subscribe,
     Unsuback,
-    Pingreq,
-    Pingresp
+    Unsubscribe
   }
 
-  use GenServer
+  require Logger
 
   @enforce_keys [:client_id, :handler]
   defstruct client_id: nil,
@@ -31,8 +32,6 @@ defmodule Tortoise311.Connection.Controller do
             status: :down,
             awaiting: %{},
             handler: %Handler{module: Handler.Default, initial_args: []}
-
-  alias __MODULE__, as: State
 
   # Client API
   def start_link(opts) do

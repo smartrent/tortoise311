@@ -23,13 +23,14 @@ defmodule Tortoise311.Connection.Inflight.Track do
   # attached to the Controller module, so in that case there will be no
   # caller.
 
-  @type package :: Package.Publish | Package.Subscribe | Package.Unsubscribe
+  alias __MODULE__, as: State
+  alias Tortoise311.Package
 
+  @type package :: Package.Publish | Package.Subscribe | Package.Unsubscribe
   @type caller :: {pid(), reference()} | nil
   @type polarity :: :positive | {:negative, caller()}
   @type next_action :: {:dispatch | :expect, Tortoise311.Encodable.t()}
   @type status_update :: {:received | :dispatched, Tortoise311.Encodable.t()}
-
   @opaque t :: %__MODULE__{
             polarity: :positive | :negative,
             type: package,
@@ -38,6 +39,7 @@ defmodule Tortoise311.Connection.Inflight.Track do
             status: [status_update()],
             pending: [next_action()]
           }
+
   @enforce_keys [:type, :identifier, :polarity, :pending]
   defstruct type: nil,
             polarity: nil,
@@ -45,9 +47,6 @@ defmodule Tortoise311.Connection.Inflight.Track do
             identifier: nil,
             status: [],
             pending: []
-
-  alias __MODULE__, as: State
-  alias Tortoise311.Package
 
   def next(%State{pending: [[next_action, resolution] | _]}) do
     {next_action, resolution}

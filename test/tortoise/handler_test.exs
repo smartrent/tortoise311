@@ -2,8 +2,8 @@ defmodule Tortoise311.HandlerTest do
   use ExUnit.Case, async: true
   doctest Tortoise311.Handler
 
-  alias Tortoise311.Handler
   alias Tortoise311.Connection.Inflight.Track
+  alias Tortoise311.Handler
   alias Tortoise311.Package
 
   defmodule TestHandler do

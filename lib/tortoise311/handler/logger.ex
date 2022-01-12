@@ -1,12 +1,13 @@
 defmodule Tortoise311.Handler.Logger do
   @moduledoc false
 
-  require Logger
-
   use Tortoise311.Handler
 
-  defstruct []
   alias __MODULE__, as: State
+
+  require Logger
+
+  defstruct []
 
   def init(_opts) do
     Logger.info("Initializing handler")

@@ -2,10 +2,9 @@ defmodule Tortoise311.Connection.ControllerTest do
   use ExUnit.Case
   doctest Tortoise311.Connection.Controller
 
+  import ExUnit.CaptureLog
   alias Tortoise311.Package
   alias Tortoise311.Connection.{Controller, Inflight}
-
-  import ExUnit.CaptureLog
 
   defmodule TestHandler do
     use Tortoise311.Handler

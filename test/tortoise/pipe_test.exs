@@ -1,9 +1,10 @@
 defmodule Tortoise311.PipeTest do
   use ExUnit.Case, async: true
+
   doctest Tortoise311.Pipe
 
-  alias Tortoise311.{Pipe, Package}
   alias Tortoise311.Connection.Inflight
+  alias Tortoise311.{Package, Pipe}
 
   setup context do
     {:ok, %{client_id: context.test}}

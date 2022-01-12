@@ -1,14 +1,15 @@
 defmodule Tortoise311.Package.Pubrel do
   @moduledoc false
 
-  @opcode 6
-
   alias Tortoise311.Package
+
+  @opcode 6
 
   @opaque t :: %__MODULE__{
             __META__: Package.Meta.t(),
             identifier: Tortoise311.package_identifier()
           }
+
   @enforce_keys [:identifier]
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 0b0010},
             identifier: nil
