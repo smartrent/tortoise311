@@ -38,9 +38,11 @@ defmodule Tortoise311.Integration.ScriptedTransport do
   The transport will shutdown if it get an unexpected package.
   """
 
-  import Kernel, except: [send: 2]
-
   @behaviour Tortoise311.Transport
+
+  use GenServer
+
+  import Kernel, except: [send: 2]
   alias Tortoise311.Transport
   alias __MODULE__, as: State
 
@@ -57,8 +59,6 @@ defmodule Tortoise311.Integration.ScriptedTransport do
     :controlling_process,
     :buffer
   ]
-
-  use GenServer
 
   # Client API
   def start_link({host, port}, opts) do

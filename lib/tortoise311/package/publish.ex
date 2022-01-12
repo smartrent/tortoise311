@@ -1,9 +1,9 @@
 defmodule Tortoise311.Package.Publish do
   @moduledoc false
 
-  @opcode 3
-
   alias Tortoise311.Package
+
+  @opcode 3
 
   @type t :: %__MODULE__{
           __META__: Package.Meta.t(),
@@ -14,6 +14,7 @@ defmodule Tortoise311.Package.Publish do
           dup: boolean(),
           retain: boolean()
         }
+
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 0},
             identifier: nil,
             topic: nil,

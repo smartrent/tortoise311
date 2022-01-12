@@ -1,8 +1,9 @@
 defmodule Tortoise311.Connection.Backoff do
   @moduledoc false
 
-  defstruct min_interval: 100, max_interval: 30_000, value: nil
   alias __MODULE__, as: State
+
+  defstruct min_interval: 100, max_interval: 30_000, value: nil
 
   @doc """
   Create an opaque data structure that describe a incremental

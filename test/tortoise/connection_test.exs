@@ -5,9 +5,9 @@ defmodule Tortoise311.ConnectionTest do
   use ExUnit.Case, async: true
   doctest Tortoise311.Connection
 
+  alias Tortoise311.Connection
   alias Tortoise311.Integration.ScriptedMqttServer
   alias Tortoise311.Integration.ScriptedTransport
-  alias Tortoise311.Connection
   alias Tortoise311.Package
 
   setup context do

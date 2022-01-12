@@ -3,7 +3,7 @@ defmodule Tortoise311.Connection.Supervisor do
 
   use Supervisor
 
-  alias Tortoise311.Connection.{Receiver, Controller, Inflight}
+  alias Tortoise311.Connection.{Controller, Inflight, Receiver}
 
   def start_link(opts) do
     client_id = Keyword.fetch!(opts, :client_id)

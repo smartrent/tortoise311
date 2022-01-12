@@ -1,13 +1,14 @@
 defmodule Tortoise311.Package.Pingresp do
   @moduledoc false
 
-  @opcode 13
-
   alias Tortoise311.Package
+
+  @opcode 13
 
   @opaque t :: %__MODULE__{
             __META__: Package.Meta.t()
           }
+
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 0}
 
   @spec decode(<<_::16>>) :: t

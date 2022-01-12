@@ -8,15 +8,15 @@ defmodule Tortoise311.Integration.ScriptedMqttServer do
 
   use GenServer
 
+  alias Tortoise311.Package
+  alias __MODULE__, as: State
+
   defstruct transport: nil,
             server_socket: nil,
             script: [],
             client_pid: nil,
             client: nil,
             server_info: nil
-
-  alias Tortoise311.Package
-  alias __MODULE__, as: State
 
   # Client API
   def start_link() do

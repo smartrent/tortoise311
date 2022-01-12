@@ -7,6 +7,11 @@ defmodule Tortoise311.Connection do
 
   use GenServer
 
+  alias __MODULE__, as: State
+  alias Tortoise311.Connection.{Backoff, Controller, Inflight, Receiver}
+  alias Tortoise311.Package.{Connack, Connect}
+  alias Tortoise311.{Connection, Events, Handler, Package, Transport}
+
   require Logger
 
   defstruct [
@@ -20,12 +25,6 @@ defmodule Tortoise311.Connection do
     :opts,
     :handler
   ]
-
-  alias __MODULE__, as: State
-
-  alias Tortoise311.{Transport, Connection, Package, Events, Handler}
-  alias Tortoise311.Connection.{Inflight, Controller, Receiver, Backoff}
-  alias Tortoise311.Package.{Connect, Connack}
 
   @doc """
   Start a connection process and link it to the current process.

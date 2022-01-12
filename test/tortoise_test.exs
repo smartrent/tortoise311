@@ -1,9 +1,10 @@
 defmodule TortoiseTest do
   use ExUnit.Case
+
   doctest Tortoise311
 
-  alias Tortoise311.Package
   alias Tortoise311.Connection.Inflight
+  alias Tortoise311.Package
 
   setup context do
     {:ok, %{client_id: context.test, transport: Tortoise311.Transport.Tcp}}

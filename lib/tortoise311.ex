@@ -60,9 +60,9 @@ defmodule Tortoise311 do
   approach should be fast and efficient.
   """
 
-  alias Tortoise311.Package
   alias Tortoise311.Connection
   alias Tortoise311.Connection.Inflight
+  alias Tortoise311.Package
 
   @typedoc """
   An identifier used to identify the client on the server.

@@ -1,9 +1,9 @@
 defmodule Tortoise311.Package.Connect do
   @moduledoc false
 
-  @opcode 1
-
   alias Tortoise311.Package
+
+  @opcode 1
 
   @opaque t :: %__MODULE__{
             __META__: Package.Meta.t(),
@@ -16,6 +16,7 @@ defmodule Tortoise311.Package.Connect do
             client_id: Tortoise311.client_id(),
             will: Package.Publish.t() | nil
           }
+
   @enforce_keys [:client_id]
   defstruct __META__: %Package.Meta{opcode: @opcode},
             protocol: "MQTT",

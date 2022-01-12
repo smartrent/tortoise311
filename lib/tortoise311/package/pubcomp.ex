@@ -1,14 +1,15 @@
 defmodule Tortoise311.Package.Pubcomp do
   @moduledoc false
 
-  @opcode 7
-
   alias Tortoise311.Package
+
+  @opcode 7
 
   @opaque t :: %__MODULE__{
             __META__: Package.Meta.t(),
             identifier: Tortoise311.package_identifier()
           }
+
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 0},
             identifier: nil
 

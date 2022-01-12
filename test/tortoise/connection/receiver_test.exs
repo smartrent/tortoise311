@@ -2,8 +2,8 @@ defmodule Tortoise311.Connection.ReceiverTest do
   use ExUnit.Case
   doctest Tortoise311.Connection.Controller
 
+  alias Tortoise311.Connection.{Controller, Receiver}
   alias Tortoise311.Package
-  alias Tortoise311.Connection.{Receiver, Controller}
 
   setup context do
     {:ok, %{client_id: context.test}}

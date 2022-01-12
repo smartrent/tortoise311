@@ -1,18 +1,18 @@
 defmodule Tortoise311.Package.Suback do
   @moduledoc false
 
-  @opcode 9
-
   alias Tortoise311.Package
+
+  @opcode 9
 
   @type qos :: 0 | 1 | 2
   @type ack_result :: {:ok, qos} | {:error, :access_denied}
-
   @opaque t :: %__MODULE__{
             __META__: Package.Meta.t(),
             identifier: Tortoise311.package_identifier(),
             acks: [ack_result]
           }
+
   @enforce_keys [:identifier]
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 0},
             identifier: nil,

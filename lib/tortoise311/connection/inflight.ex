@@ -1,18 +1,17 @@
 defmodule Tortoise311.Connection.Inflight do
   @moduledoc false
 
-  alias Tortoise311.{Package, Connection}
+  use GenStateMachine
+
+  alias __MODULE__, as: State
   alias Tortoise311.Connection.Controller
   alias Tortoise311.Connection.Inflight.Track
-
-  use GenStateMachine
+  alias Tortoise311.{Connection, Package}
 
   require Logger
 
   @enforce_keys [:client_id]
   defstruct client_id: nil, pending: %{}, order: []
-
-  alias __MODULE__, as: State
 
   # Client API
   def start_link(opts) do

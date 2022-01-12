@@ -1,19 +1,19 @@
 defmodule Tortoise311.Package.Subscribe do
   @moduledoc false
 
-  @opcode 8
-
   alias Tortoise311.Package
+
+  @opcode 8
 
   @type qos :: 0 | 1 | 2
   @type topic :: {binary(), qos}
   @type topics :: [topic]
-
   @opaque t :: %__MODULE__{
             __META__: Package.Meta.t(),
             identifier: Tortoise311.package_identifier(),
             topics: topics()
           }
+
   defstruct __META__: %Package.Meta{opcode: @opcode, flags: 0b0010},
             identifier: nil,
             topics: []
