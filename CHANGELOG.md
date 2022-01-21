@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.3 - 2022-01-21
+
+- Now produces transmission telemetry
+- Cleaned up docs which still referred to Tortoise instead of Tortoise311
+- Various code cleanup following adding credo to the circleci config
+
 ## 0.11.2 - 2021-12-17
 
 - Fixed crashes that could happen when the broker reconnects
