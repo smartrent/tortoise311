@@ -1,26 +1,25 @@
 # Connecting to a MQTT Broker
 
-Tortoise is capable of connecting to any MQTT broker that implements
-the 3.1.1 version of the MQTT protocol (support for MQTT 5 is
-planned). It does so by taking a connection specification, and with it
-will do its best to connect to the broker and keeping the connection
+Tortoise311 is capable of connecting to any MQTT broker that implements
+the 3.1.1 version of the MQTT protocol. It does so by taking a connection specification,
+and with it will do its best to connect to the broker and keeping the connection
 open.
 
 A minimal connection specification looks like this:
 
 ``` elixir
 {ok, _pid} =
-  Tortoise.Connection.start_link(
+  Tortoise311.Connection.start_link(
     client_id: HelloWorld,
-    server: {Tortoise.Transport.Tcp, host: "localhost", port: 1883},
-    handler: {Tortoise.Handler.Logger, []}
+    server: {Tortoise311.Transport.Tcp, host: "localhost", port: 1883},
+    handler: {Tortoise311.Handler.Logger, []}
   )
 ```
 
 This will establish a TCP connection to a broker running on
 *localhost* port *1883*. The connection takes a module that implements
-the `Tortoise.Handler` behaviour; In this case the
-`Tortoise.Handler.Logger` callback module, which will print a log
+the `Tortoise311.Handler` behaviour; In this case the
+`Tortoise311.Handler.Logger` callback module, which will print a log
 statement on events happening during the connection life cycle.
 
 Furthermore, we specify that the `client_id` of the connection is
@@ -34,15 +33,15 @@ a successful connection. This document aims to give an overview.
 
 ## Network Transport
 
-Tortoise has an abstraction for the network transport, and comes
-with two official implementations included in Tortoise itself:
+Tortoise311 has an abstraction for the network transport, and comes
+with two official implementations included in Tortoise311 itself:
 
-  - `Tortoise.Transport.Tcp` used to connect to a broker via
+  - `Tortoise311.Transport.Tcp` used to connect to a broker via
     TCP. While this transport is the simplest to use it is also the
     least secure, and should only be used on trusted networks. It is
     based on `:gen_tcp` found in the Erlang/OTP distribution.
 
-  - `Tortoise.Transport.SSL` used to create a secure connection via
+  - `Tortoise311.Transport.SSL` used to create a secure connection via
     secure socket layer. This option takes a bit more work to setup,
     but it will prevent people from eavesdropping on the data being
     sent between the client and the broker.
@@ -51,12 +50,12 @@ The transports are given with the `server` field in the connection
 specification as a tuple, containing the transport type and an
 options list specific to the given transport.
 
-`Tortoise.Transport.Tcp` takes two options; the host name as a string,
+`Tortoise311.Transport.Tcp` takes two options; the host name as a string,
 such as `"localhost"` or a four-tuple describing an IP-network
 address, such as `{127, 0, 0, 1}`. An example where the TCP transport
 is used can be seen in the introduction to this article.
 
-The `Tortoise.Transport.SSL` is a bit more versatile in its
+The `Tortoise311.Transport.SSL` is a bit more versatile in its
 configuration options. The most important additional options are:
 
   - `cacertfile` needs to point to a file with trusted CA
@@ -86,14 +85,14 @@ module for detailed information on the possible configuration
 options.
 
 Information on creating a custom transport can be found in the
-`Tortoise.Transport` module, but for most cases the TCP and SSL modules
+`Tortoise311.Transport` module, but for most cases the TCP and SSL modules
 should suffice.
 
 ## Connection Handler
 
-A handful of events are possible during a client life cycle. Tortoise
+A handful of events are possible during a client life cycle. Tortoise311
 aims to expose the interesting events as callback functions, defined in
-the `Tortoise.Handler` behaviour, making it possible to implement
+the `Tortoise311.Handler` behaviour, making it possible to implement
 custom behavior for the client. The exposed events are:
 
   - The client is initialized, or terminated allowing for
@@ -104,7 +103,7 @@ custom behavior for the client. The exposed events are:
   - A message is received on one of the subscribed topic filters
 
 Read more about defining custom behavior for a connection in the
-documentation for the `Tortoise.Handler` module.
+documentation for the `Tortoise311.Handler` module.
 
 ## The `client_id`
 
@@ -142,18 +141,18 @@ with the named connection.
 
 ``` elixir
 {ok, _pid} =
-  Tortoise.Connection.start_link(
+  Tortoise311.Connection.start_link(
     client_id: MyClient,
-    server: {Tortoise.Transport.Tcp, host: "localhost", port: 1883},
-    handler: {Tortoise.Handler.Logger, []}
+    server: {Tortoise311.Transport.Tcp, host: "localhost", port: 1883},
+    handler: {Tortoise311.Handler.Logger, []}
   )
 
-Tortoise.publish(MyClient, "foo/bar", "hello")
+Tortoise311.publish(MyClient, "foo/bar", "hello")
 ```
 
 **Note**: Though the MQTT 3.1.1 protocol allows for a zero-byte
 client id — in which case the server should assign a random `client_id`
-for the connection — a client id is enforced in Tortoise. This is
+for the connection — a client id is enforced in Tortoise311. This is
 done so the connection has an identifier that can be used when
 interacting with the connection.
 
@@ -180,7 +179,7 @@ When connected, an MQTT client should ping the server on a set interval
 to let the broker know that it is still alive. The keep alive value is
 given as an integer, describing time in seconds between keep alive
 messages, and should be set depending on factors such as power
-consumption, network bandwidth, etc. Per default Tortoise will send a
+consumption, network bandwidth, etc. Per default Tortoise311 will send a
 keep alive message every 60 seconds, which is a reasonable value for
 most installations. The allowed maximum value is `65_535`, which is 18
 hours, 12 minutes, and 15 seconds; most would consider this a bit too
@@ -188,7 +187,7 @@ extreme, and some brokers might reject connections specifying `keep_alive`
 interval that is too high.
 
 Some brokers allow disabling the keep alive interval by setting it to
-zero, so `Tortoise` allows for a `keep_alive` specified as `0`. Note
+zero, so `Tortoise311` allows for a `keep_alive` specified as `0`. Note
 that the broker can still choose to disconnect a given client due to
 inactivity. When `keep_alive` is disabled, the broker
 implementation will decide its own measure of inactivity. So, to avoid
@@ -202,18 +201,18 @@ message is known as the last will message, and allows for other
 connected clients to act on other clients leaving the broker.
 
 The (default) last will message is specified as part of the connection, and for
-Tortoise it is possible to configure a last will message by passing in
-a `Tortoise.Package.Publish` struct to the *will* connection
-configuration field. Note that the Tortoise handler can provide a new last will message for 
+Tortoise311 it is possible to configure a last will message by passing in
+a `Tortoise311.Package.Publish` struct to the *will* connection
+configuration field. Note that the Tortoise311 handler can provide a new last will message for 
 each new connection. If the handler chooses not to, the connection's default message will be used.
 
 ``` elixir
 {:ok, pid} =
-  Tortoise.Connection.start_link(
+  Tortoise311.Connection.start_link(
     client_id: William,
-    server: {Tortoise.Transport.Tcp, host: 'localhost', port: 1883},
-    handler: {Tortoise.Handler.Logger, []},
-    will: %Tortoise.Package.Publish{topic: "foo/bar", payload: "goodbye"}
+    server: {Tortoise311.Transport.Tcp, host: 'localhost', port: 1883},
+    handler: {Tortoise311.Handler.Logger, []},
+    will: %Tortoise311.Package.Publish{topic: "foo/bar", payload: "goodbye"}
   )
 ```
 
