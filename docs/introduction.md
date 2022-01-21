@@ -1,6 +1,6 @@
 # Introduction
 
-Tortoise is a MQTT client application written in Elixir for use in
+Tortoise311 is a MQTT client application written in Elixir for use in
 Elixir applications. Its philosophy is to separate the MQTT semantics
 from the Elixir semantics, attempting to hide the MQTT protocol
 details from the end-user while still being flexible enough to be able
@@ -81,9 +81,9 @@ connecting to the broker. The broker will keep this message and
 dispatch it to the specified topic when the client disconnects abruptly
 from the broker.
 
-## The Tortoise MQTT Client
+## The Tortoise311 MQTT Client
 
-Tortoise aims to hide the MQTT semantics from the user, and expose an
+Tortoise311 aims to hide the MQTT semantics from the user, and expose an
 interface that should be familiar to an Elixir developer. This means
 the message exchanges needed to complete a publish or retrieval of a
 message on a subscription with a QoS>0 should be handled in the
@@ -92,7 +92,7 @@ the user.
 
 While the goal of the project is to hide the details of the MQTT
 protocol from the user, another goal is not to restrict the user in any
-way. This means Tortoise will attempt to map Elixir semantics to
+way. This means Tortoise311 will attempt to map Elixir semantics to
 MQTT semantics, which should be possible because both systems deal
 with message passing:
 
@@ -101,7 +101,7 @@ with message passing:
   - A publish with QoS>0 results in a message exchange between the
     sender and the receiver; to keep track of these messages the MQTT
     protocol specifies that these messages should have an identifier
-    assigned, a random 16-bit number. The user of Tortoise will never
+    assigned, a random 16-bit number. The user of Tortoise311 will never
     see this random 16-bit number, but instead an Erlang reference
     will get returned from the publish function, which makes it
     possible to await and pattern match for the return.
@@ -116,7 +116,7 @@ with message passing:
     a subscription; acknowledges an unsubscribe; and receives a message
     on one of the subscribed topics.
 
-If the design of Tortoise is a hindrance to creating something with
+If the design of Tortoise311 is a hindrance to creating something with
 MQTT (within reason) it should be considered a bug, and it should be
 discussed how we should map that behaviour to Elixir semantics.
 
@@ -124,7 +124,7 @@ discussed how we should map that behaviour to Elixir semantics.
 
 MQTT is a protocol implementing a PubSub allowing one or multiple
 clients to subscribe to topics, using topic filters, and clients to
-publish messages to topics. Tortoise is an MQTT client that aims to map
+publish messages to topics. Tortoise311 is an MQTT client that aims to map
 MQTT semantics to Elixir so sending and receiving messages using an
 MQTT broker feels like any other kind of message passing, and awaiting
 results feels natural to the Elixir ecosystem.
