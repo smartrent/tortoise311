@@ -123,8 +123,8 @@ defmodule Tortoise311.Connection.ControllerTest do
     assert {:ok, pid} = Controller.start_link(opts)
     assert Process.alive?(pid)
     assert :ok = Controller.stop(context.client_id)
-    refute Process.alive?(pid)
-    assert_receive {:terminating, :normal}
+    state = Controller.info(context.client_id)
+    assert state.status == :stopped
   end
 
   describe "Connection callback" do
