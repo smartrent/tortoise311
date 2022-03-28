@@ -50,8 +50,10 @@ defmodule Tortoise311.Connection.Controller do
     Tortoise311.Registry.via_name(__MODULE__, client_id)
   end
 
+  # This is sent just before the Controller's supervisor is shutdown.
+  # All we want to do here is disable the controller until it is terminated by its supervisor shutting down.
   def stop(client_id) do
-    GenServer.stop(via_name(client_id))
+    GenServer.cast(via_name(client_id), :stop)
   end
 
   def info(client_id) do
@@ -123,6 +125,11 @@ defmodule Tortoise311.Connection.Controller do
   end
 
   @impl GenServer
+
+  def handle_cast(_, %State{status: :stopped} = state), do: {:noreply, state}
+
+  def handle_cast(:stop, state), do: {:noreply, %State{state | status: :stopped}}
+
   def handle_cast({:incoming, <<package::binary>>}, state) do
     package
     |> Package.decode()
@@ -152,9 +159,13 @@ defmodule Tortoise311.Connection.Controller do
         {:result, {Package.Subscribe, subacks}},
         %State{handler: handler} = state
       ) do
-    case Handler.execute(handler, {:subscribe, subacks}) do
-      {:ok, updated_handler} ->
-        {:noreply, %State{state | handler: updated_handler}}
+    if state.status != :stopped do
+      case Handler.execute(handler, {:subscribe, subacks}) do
+        {:ok, updated_handler} ->
+          {:noreply, %State{state | handler: updated_handler}}
+      end
+    else
+      {:noreply, state}
     end
   end
 
@@ -162,9 +173,13 @@ defmodule Tortoise311.Connection.Controller do
         {:result, {Package.Unsubscribe, unsubacks}},
         %State{handler: handler} = state
       ) do
-    case Handler.execute(handler, {:unsubscribe, unsubacks}) do
-      {:ok, updated_handler} ->
-        {:noreply, %State{state | handler: updated_handler}}
+    if state.status != :stopped do
+      case Handler.execute(handler, {:unsubscribe, unsubacks}) do
+        {:ok, updated_handler} ->
+          {:noreply, %State{state | handler: updated_handler}}
+      end
+    else
+      {:noreply, state}
     end
   end
 
@@ -175,13 +190,19 @@ defmodule Tortoise311.Connection.Controller do
         {:onward, %Package.Publish{qos: 2, dup: false} = publish},
         %State{handler: handler} = state
       ) do
-    case Handler.execute(handler, {:publish, publish}) do
-      {:ok, updated_handler} ->
-        {:noreply, %State{state | handler: updated_handler}}
+    if state.status != :stopped do
+      case Handler.execute(handler, {:publish, publish}) do
+        {:ok, updated_handler} ->
+          {:noreply, %State{state | handler: updated_handler}}
+      end
+    else
+      {:noreply, state}
     end
   end
 
   @impl GenServer
+  def handle_info(_, %State{status: :stopped} = state), do: {:noreply, state}
+
   def handle_info({:next_action, {:subscribe, topic, opts} = action}, state) do
     {qos, opts} = Keyword.pop_first(opts, :qos, 0)
 
