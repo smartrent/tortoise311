@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.4 - 2022-04-04
+
+- The Connection Controller is no longer terminated but only disabled just before shutting down its supervisor.
+
 ## 0.11.3 - 2022-01-21
 
 - Now produces transmission telemetry
