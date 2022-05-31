@@ -81,7 +81,7 @@ defmodule Tortoise311.MixProject do
   defp dialyzer() do
     [
       ignore_warnings: "dialyzer.ignore",
-      flags: [:error_handling, :underspecs]
+      flags: [:unmatched_returns, :error_handling, :missing_return, :extra_return, :underspecs]
     ]
   end
 end

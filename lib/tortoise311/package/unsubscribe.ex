@@ -17,12 +17,16 @@ defmodule Tortoise311.Package.Unsubscribe do
             topics: [],
             identifier: nil
 
-  @spec decode(binary()) :: t
+  @spec decode(binary()) :: t | {:error, :invalid_unsubscription_payload}
   def decode(<<@opcode::4, 0b0010::4, payload::binary>>) do
     with payload <- drop_length(payload),
          <<identifier::big-integer-size(16), topics::binary>> <- payload,
-         topic_list <- decode_topics(topics),
-         do: %__MODULE__{identifier: identifier, topics: topic_list}
+         topic_list <- decode_topics(topics) do
+      %__MODULE__{identifier: identifier, topics: topic_list}
+    else
+      _invalid_payload ->
+        {:error, :invalid_unsubscription_payload}
+    end
   end
 
   defp drop_length(payload) do
