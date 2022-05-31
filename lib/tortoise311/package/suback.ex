@@ -18,7 +18,10 @@ defmodule Tortoise311.Package.Suback do
             identifier: nil,
             acks: []
 
-  @spec decode(binary()) :: t
+  @spec decode(binary()) ::
+          t
+          | {:error,
+             {:protocol_violation, :empty_subscription_ack | :invalid_subscription_payload}}
   def decode(<<@opcode::4, 0::4, payload::binary>>) do
     with payload <- drop_length(payload),
          <<identifier::big-integer-size(16), acks::binary>> <- payload do
@@ -29,6 +32,8 @@ defmodule Tortoise311.Package.Suback do
         sub_acks ->
           %__MODULE__{identifier: identifier, acks: sub_acks}
       end
+    else
+      _invalid_binary -> {:error, {:protocol_violation, :invalid_subscription_payload}}
     end
   end
 

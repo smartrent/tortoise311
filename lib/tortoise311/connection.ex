@@ -363,8 +363,6 @@ defmodule Tortoise311.Connection do
   def init(
         {transport, %Connect{client_id: client_id} = connect, backoff_opts, subscriptions, opts}
       ) do
-    Handler.new(Keyword.fetch!(opts, :handler))
-
     {:ok, %Handler{} = handler} =
       Handler.new(Keyword.fetch!(opts, :handler)) |> Handler.execute(:init)
 
@@ -380,7 +378,7 @@ defmodule Tortoise311.Connection do
     }
 
     Tortoise311.Registry.put_meta(via_name(client_id), :connecting)
-    Tortoise311.Events.register(client_id, :status)
+    {:ok, _pid} = Tortoise311.Events.register(client_id, :status)
 
     # eventually, switch to handle_continue
     send(self(), :connect)
