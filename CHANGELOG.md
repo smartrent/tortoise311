@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.5 - 2022-06-03
+
+- Added dialyzer flags :missing_returns and :extra_returns
+- Minor fixes from new dialyzer warnings
+- CI updated to OTP 25
+
 ## 0.11.4 - 2022-04-04
 
 - The Connection Controller is no longer terminated but only disabled just before shutting down its supervisor.
