@@ -124,6 +124,8 @@ You can choose to register any or all of the following metrics in the Applicatio
       Telemetry.Metrics.sum("tortoise311.connection.rx_bytes")
 ```
 
+Telemetry may be disabled (one less process per connnection) if not needed, by passing `enable_telemetry: false` as a connection option.
+
 ## Installation
 
 Tortoise311 can be installed by adding `tortoise311` to your list of

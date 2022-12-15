@@ -16,13 +16,13 @@ defmodule Tortoise311.Connection.Supervisor do
 
   @impl Supervisor
   def init(opts) do
-    children = [
+    base_children = [
       {Inflight, Keyword.take(opts, [:client_id])},
       {Receiver, Keyword.take(opts, [:client_id])},
       {Controller, Keyword.take(opts, [:client_id, :handler])},
-      {Telemetry, Keyword.take(opts, [:client_id])}
     ]
-
+    optional_telemetry = Keyword.get(opts, :enable_telemetry, true) && {Telemetry, Keyword.take(opts, [:client_id])}
+    children = if optional_telemetry, do: base_children ++ [optional_telemetry], else: base_children
     Supervisor.init(children, strategy: :rest_for_one)
   end
 end

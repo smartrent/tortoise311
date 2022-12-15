@@ -44,6 +44,7 @@ defmodule Tortoise311.Connection do
                   [{Tortoise311.topic_filter(), Tortoise311.qos()}]
                   | Tortoise311.Package.Subscribe.t()}
                | {:clean_session, boolean()}
+               | {:enable_telemetry, boolean()}
                | {:handler, {atom(), term()}},
              options: [option]
   def start_link(connection_opts, opts \\ []) do
@@ -75,7 +76,7 @@ defmodule Tortoise311.Connection do
       end
 
     # @todo, validate that the handler is valid
-    connection_opts = Keyword.take(connection_opts, [:client_id, :handler])
+    connection_opts = Keyword.take(connection_opts, [:client_id, :handler, :enable_telemetry])
     initial = {server, connect, backoff, subscriptions, connection_opts}
     opts = Keyword.merge(opts, name: via_name(client_id))
     GenServer.start_link(__MODULE__, initial, opts)
