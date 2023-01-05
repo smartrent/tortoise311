@@ -21,8 +21,8 @@ defmodule Tortoise311.Connection.Supervisor do
       {Receiver, Keyword.take(opts, [:client_id])},
       {Controller, Keyword.take(opts, [:client_id, :handler])},
     ]
-    optional_telemetry = Keyword.get(opts, :enable_telemetry, true) && {Telemetry, Keyword.take(opts, [:client_id])}
-    children = if optional_telemetry, do: base_children ++ [optional_telemetry], else: base_children
+    with_telemetry? = Keyword.get(opts, :enable_telemetry, true)
+    children = if with_telemetry?, do: base_children ++ [{Telemetry, Keyword.take(opts, [:client_id])}], else: base_children
     Supervisor.init(children, strategy: :rest_for_one)
   end
 end
