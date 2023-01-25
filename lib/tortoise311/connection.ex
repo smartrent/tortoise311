@@ -1,7 +1,6 @@
 defmodule Tortoise311.Connection do
   @moduledoc """
   Establish a connection to a MQTT broker.
-
   Todo.
   """
 
@@ -28,9 +27,7 @@ defmodule Tortoise311.Connection do
 
   @doc """
   Start a connection process and link it to the current process.
-
   Read the documentation on `child_spec/1` if you want... (todo!)
-
   """
   @spec start_link(options, GenServer.options()) :: GenServer.on_start()
         when option:
@@ -44,6 +41,7 @@ defmodule Tortoise311.Connection do
                   [{Tortoise311.topic_filter(), Tortoise311.qos()}]
                   | Tortoise311.Package.Subscribe.t()}
                | {:clean_session, boolean()}
+               | {:enable_telemetry, boolean()}
                | {:handler, {atom(), term()}},
              options: [option]
   def start_link(connection_opts, opts \\ []) do
@@ -75,7 +73,7 @@ defmodule Tortoise311.Connection do
       end
 
     # @todo, validate that the handler is valid
-    connection_opts = Keyword.take(connection_opts, [:client_id, :handler])
+    connection_opts = Keyword.take(connection_opts, [:client_id, :handler, :enable_telemetry])
     initial = {server, connect, backoff, subscriptions, connection_opts}
     opts = Keyword.merge(opts, name: via_name(client_id))
     GenServer.start_link(__MODULE__, initial, opts)
@@ -105,7 +103,6 @@ defmodule Tortoise311.Connection do
 
   @doc """
   Close the connection to the broker.
-
   Given the `client_id` of a running connection it will cancel the
   inflight messages and send the proper disconnect message to the
   broker. The session will get terminated on the server.
@@ -117,7 +114,6 @@ defmodule Tortoise311.Connection do
 
   @doc """
   Return the list of subscribed topics.
-
   Given the `client_id` of a running connection return its current
   subscriptions. This is helpful in a debugging situation.
   """
@@ -128,22 +124,16 @@ defmodule Tortoise311.Connection do
 
   @doc """
   Subscribe to one or more topics using topic filters on `client_id`
-
   The topic filter should be a 2-tuple, `{topic_filter, qos}`, where
   the `topic_filter` is a valid MQTT topic filter, and `qos` an
   integer value 0 through 2.
-
   Multiple topics can be given as a list.
-
   The subscribe function is asynchronous, so it will return `{:ok,
   ref}`. Eventually a response will get delivered to the process
   mailbox, tagged with the reference stored in `ref`. It will take the
   form of:
-
       {{Tortoise311, ^client_id}, ^ref, ^result}
-
   Where the `result` can be one of `:ok`, or `{:error, reason}`.
-
   Read the documentation for `Tortoise311.Connection.subscribe_sync/3`
   for a blocking version of this call.
   """
@@ -179,14 +169,12 @@ defmodule Tortoise311.Connection do
 
   @doc """
   Subscribe to topics and block until the server acknowledges.
-
   This is a synchronous version of the
   `Tortoise311.Connection.subscribe/3`. In fact it calls into
   `Tortoise311.Connection.subscribe/3` but will handle the selective
   receive loop, making it much easier to work with. Also, this
   function can be used to block a process that cannot continue before
   it has a subscription to the given topics.
-
   See `Tortoise311.Connection.subscribe/3` for configuration options.
   """
   @spec subscribe_sync(Tortoise311.client_id(), topic | topics, [options]) ::
@@ -228,9 +216,7 @@ defmodule Tortoise311.Connection do
   Unsubscribe from one of more topic filters. The topic filters are
   given as strings. Multiple topic filters can be given at once by
   passing in a list of strings.
-
       Tortoise311.Connection.unsubscribe(client_id, ["foo/bar", "quux"])
-
   This operation is asynchronous. When the operation is done a message
   will be received in mailbox of the originating process.
   """
@@ -256,11 +242,9 @@ defmodule Tortoise311.Connection do
 
   @doc """
   Unsubscribe from topics and block until the server acknowledges.
-
   This is a synchronous version of
   `Tortoise311.Connection.unsubscribe/3`. It will block until the server
   has send the acknowledge message.
-
   See `Tortoise311.Connection.unsubscribe/3` for configuration options.
   """
   @spec unsubscribe_sync(Tortoise311.client_id(), topic | topics, [options]) ::
@@ -290,11 +274,9 @@ defmodule Tortoise311.Connection do
 
   @doc """
   Ping the broker.
-
   When the round-trip is complete a message with the time taken in
   milliseconds will be send to the process that invoked the ping
   command.
-
   The connection will automatically ping the broker at the interval
   specified in the connection configuration, so there is no need to
   setup a reoccurring ping. This ping function is exposed for
@@ -307,9 +289,7 @@ defmodule Tortoise311.Connection do
 
   @doc """
   Ping the server and await the ping latency reply.
-
   Takes a `client_id` and an optional `timeout`.
-
   Like `ping/1` but will block the caller process until a response is
   received from the server. The response will contain the ping latency
   in milliseconds.
