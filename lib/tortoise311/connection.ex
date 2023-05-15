@@ -419,11 +419,14 @@ defmodule Tortoise311.Connection do
       end
     else
       %Connack{status: {:refused, reason}} ->
+        {timeout, state} = Map.get_and_update(state, :backoff, &Backoff.next/1)
+
         Logger.warn(
           "[Tortoise311] Connection refused: #{inspect(reason)}, #{inspect(summarize_state(state))}"
         )
 
-        {:stop, {:connection_failed, reason}, state}
+        Process.send_after(self(), :connect, timeout)
+        {:noreply, state}
 
       {:error, reason} ->
         {timeout, state} = Map.get_and_update(state, :backoff, &Backoff.next/1)

@@ -126,7 +126,6 @@ defmodule Tortoise311.ConnectionTest do
 
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
-      assert_receive {:EXIT, ^pid, {:connection_failed, :unacceptable_protocol_version}}
     end
 
     test "identifier rejected", context do
@@ -148,7 +147,6 @@ defmodule Tortoise311.ConnectionTest do
       assert {:ok, pid} = Connection.start_link(opts)
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
-      assert_receive {:EXIT, ^pid, {:connection_failed, :identifier_rejected}}
     end
 
     test "server unavailable", context do
@@ -170,7 +168,6 @@ defmodule Tortoise311.ConnectionTest do
       assert {:ok, pid} = Connection.start_link(opts)
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
-      assert_receive {:EXIT, ^pid, {:connection_failed, :server_unavailable}}
     end
 
     test "bad user name or password", context do
@@ -192,7 +189,6 @@ defmodule Tortoise311.ConnectionTest do
       assert {:ok, pid} = Connection.start_link(opts)
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
-      assert_receive {:EXIT, ^pid, {:connection_failed, :bad_user_name_or_password}}
     end
 
     test "not authorized", context do
@@ -214,8 +210,6 @@ defmodule Tortoise311.ConnectionTest do
       assert {:ok, pid} = Connection.start_link(opts)
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
-
-      assert_receive {:EXIT, ^pid, {:connection_failed, :not_authorized}}
     end
   end
 
