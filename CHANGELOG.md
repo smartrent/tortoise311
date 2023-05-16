@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.6 - 2023-05-16
+
+- Reconnect with backoff on connection refused, instead of terminating connection and causing immediate connection restart
+
 ## 0.11.5 - 2022-06-03
 
 - Added dialyzer flags :missing_returns and :extra_returns
