@@ -426,7 +426,7 @@ defmodule Tortoise311.ConnectionTest do
 
       {:ok, _} =
         ScriptedTransport.start_link(
-          {'localhost', 1883},
+          {~c"localhost", 1883},
           script: [
             {:refute_connection, refusal},
             {:refute_connection, refusal},
@@ -438,7 +438,7 @@ defmodule Tortoise311.ConnectionTest do
       assert {:ok, _pid} =
                Tortoise311.Connection.start_link(
                  client_id: client_id,
-                 server: {ScriptedTransport, host: 'localhost', port: 1883},
+                 server: {ScriptedTransport, host: ~c"localhost", port: 1883},
                  backoff: [min_interval: 1],
                  handler: {Tortoise311.Handler.Logger, []}
                )
@@ -464,7 +464,7 @@ defmodule Tortoise311.ConnectionTest do
 
       {:ok, _pid} =
         ScriptedTransport.start_link(
-          {'localhost', 1883},
+          {~c"localhost", 1883},
           script: [
             # first connect
             {:expect, connect},
@@ -482,7 +482,7 @@ defmodule Tortoise311.ConnectionTest do
       assert {:ok, _pid} =
                Tortoise311.Connection.start_link(
                  client_id: client_id,
-                 server: {ScriptedTransport, host: 'localhost', port: 1883},
+                 server: {ScriptedTransport, host: ~c"localhost", port: 1883},
                  backoff: [min_interval: 0],
                  handler: {Tortoise311.Handler.Logger, []}
                )
@@ -503,7 +503,7 @@ defmodule Tortoise311.ConnectionTest do
 
       {:ok, _pid} =
         ScriptedTransport.start_link(
-          {'localhost', 1883},
+          {~c"localhost", 1883},
           script: [
             {:expect, connect},
             {:dispatch, %Package.Publish{topic: "foo/bar"}}
@@ -513,7 +513,7 @@ defmodule Tortoise311.ConnectionTest do
       assert {:ok, pid} =
                Tortoise311.Connection.start_link(
                  client_id: client_id,
-                 server: {ScriptedTransport, host: 'localhost', port: 1883},
+                 server: {ScriptedTransport, host: ~c"localhost", port: 1883},
                  handler: {Tortoise311.Handler.Logger, []}
                )
 
@@ -528,12 +528,12 @@ defmodule Tortoise311.ConnectionTest do
       Process.flag(:trap_exit, true)
       client_id = context.client_id
 
-      tls_error = {:tls_alert, 'certificate unknown'}
+      tls_error = {:tls_alert, ~c"certificate unknown"}
       refusal = {:error, tls_error}
 
       {:ok, _} =
         ScriptedTransport.start_link(
-          {'localhost', 1883},
+          {~c"localhost", 1883},
           script: [
             {:refute_connection, refusal}
           ]
@@ -542,7 +542,7 @@ defmodule Tortoise311.ConnectionTest do
       assert {:ok, pid} =
                Tortoise311.Connection.start_link(
                  client_id: client_id,
-                 server: {ScriptedTransport, host: 'localhost', port: 1883},
+                 server: {ScriptedTransport, host: ~c"localhost", port: 1883},
                  backoff: [min_interval: 1],
                  handler: {Tortoise311.Handler.Logger, []}
                )
