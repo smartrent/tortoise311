@@ -8,7 +8,7 @@ defmodule Tortoise311.MixProject do
     [
       app: :tortoise311,
       version: @version,
-      elixir: "~> 1.6",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
@@ -44,8 +44,8 @@ defmodule Tortoise311.MixProject do
     [
       {:gen_state_machine, "~> 2.0 or ~> 3.0"},
       {:telemetry, "~> 1.0"},
-      {:dialyxir, "~> 1.1.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.10", only: :test},
+      {:dialyxir, "~> 1.3.0", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.16.1", only: :test},
       {:ex_doc, "~> 0.19", only: :docs, runtime: false},
       {:ct_helper, github: "ninenines/ct_helper", only: :test},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
