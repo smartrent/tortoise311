@@ -344,7 +344,7 @@ defmodule Tortoise311.Connection do
             {:ok, {transport, socket}}
         after
           timeout ->
-            Logger.warn("[Tortoise311] Connection - timed out")
+            Logger.warning("[Tortoise311] Connection - timed out")
             {:error, :timeout}
         end
 
@@ -421,7 +421,7 @@ defmodule Tortoise311.Connection do
       %Connack{status: {:refused, reason}} ->
         {timeout, state} = Map.get_and_update(state, :backoff, &Backoff.next/1)
 
-        Logger.warn(
+        Logger.warning(
           "[Tortoise311] Connection refused: #{inspect(reason)}, #{inspect(summarize_state(state))}"
         )
 
@@ -431,7 +431,7 @@ defmodule Tortoise311.Connection do
       {:error, reason} ->
         {timeout, state} = Map.get_and_update(state, :backoff, &Backoff.next/1)
 
-        Logger.warn(
+        Logger.warning(
           "[Tortoise311] Connection failed: #{inspect(reason)}, #{inspect(summarize_state(state))}. Retrying in #{timeout} msecs."
         )
 

@@ -245,7 +245,10 @@ defmodule Tortoise311.Connection.Inflight do
       {:keep_state, data, next_actions}
     else
       :error ->
-        Logger.warn("[Tortoise311] Ignoring response with unknown identifier: #{inspect(update)}")
+        Logger.warning(
+          "[Tortoise311] Ignoring response with unknown identifier: #{inspect(update)}"
+        )
+
         :keep_state_and_data
 
       {:error, reason} ->
@@ -296,7 +299,7 @@ defmodule Tortoise311.Connection.Inflight do
         {:keep_state, handle_next(track, data)}
 
       {:error, :closed} ->
-        Logger.warn(
+        Logger.warning(
           "[Tortoise311] Transport #{inspect(transport)} is closed. Assuming disconnected. Retry execution when reconnected."
         )
 

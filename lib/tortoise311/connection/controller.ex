@@ -242,7 +242,7 @@ defmodule Tortoise311.Connection.Controller do
   def handle_info({{Tortoise311, client_id}, ref, result}, %{client_id: client_id} = state) do
     case {result, Map.pop(state.awaiting, ref)} do
       {_, {nil, _}} ->
-        Logger.warn("Unexpected async result")
+        Logger.warning("Unexpected async result")
         {:noreply, state}
 
       {:ok, {_action, updated_awaiting}} ->

@@ -73,12 +73,12 @@ defmodule Tortoise311.Connection.Telemetry do
             %State{state | socket_stats: %{socket: socket, last_stats: stats}}
 
           other ->
-            Logger.warn("[Tortoise311] Failed to get socket stats: #{inspect(other)}")
+            Logger.warning("[Tortoise311] Failed to get socket stats: #{inspect(other)}")
             state
         end
 
       other ->
-        Logger.warn("[Tortoise311] Failed to capture telemetry on socket: #{inspect(other)}")
+        Logger.warning("[Tortoise311] Failed to capture telemetry on socket: #{inspect(other)}")
         state
     end
   end
