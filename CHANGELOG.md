@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.7 - 2023-08-08
+
+- Fix warnings when using Elixir 1.15
+
 ## 0.11.6 - 2023-05-16
 
 - Reconnect with backoff on connection refused, instead of terminating connection and causing immediate connection restart
