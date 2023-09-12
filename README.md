@@ -151,6 +151,17 @@ mix deps.get
 MIX_ENV=test mix test
 ```
 
+### Simple MQTT Broker
+
+For testing purposes, `Tortoise311.SimpleBroker` is avaialble for unencrypted
+connections (using `Tortoise311.Transport.Tcp`). It handles device connection,
+subscriptions, and message publishing which is useful for local client
+development. It can also be used to bridge messages from clients to another
+service, such as a web server, to further test roudtrip message delivery from
+device to server in a fully local environment.
+
+See the `Tortoise311.SimpleBroker` for more info.
+
 ## Building documentation
 
 To build the documentation run the following command in a terminal emulator:
