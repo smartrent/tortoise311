@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.0 - 2024-08-01
+
+- Cap the max reconnect rate by delaying before the first connect
+- Add jitter to backoff delays
+- Backoff when retrying failed subscriptions
+- Bump dependencies and test with Elixir 1.17
+
 ## 0.11.7 - 2023-08-08
 
 - Fix warnings when using Elixir 1.15
