@@ -458,7 +458,7 @@ defmodule Tortoise311.Connection do
         # subscribe to the predefined topics
         case Inflight.track_sync(client_id, {:outgoing, subscriptions}, 5000) do
           {:error, :timeout} ->
-            {:stop, :subscription_timeout, state}
+            {:noreply, retry_subscribe(state, "Subscription timed out")}
 
           result ->
             case handle_suback_result(result, state) do
@@ -466,8 +466,8 @@ defmodule Tortoise311.Connection do
                 {:noreply, updated_state}
 
               {:error, reasons} ->
-                error = {:unable_to_subscribe, reasons}
-                {:stop, error, state}
+                {:noreply,
+                 retry_subscribe(state, "Subscription failed because of #{inspect(reasons)}")}
             end
         end
     end
@@ -673,6 +673,17 @@ defmodule Tortoise311.Connection do
     # set clean session to false for future reconnect attempts
     connect = %Connect{connect | clean_session: false}
     {:ok, %State{state | connect: connect}}
+  end
+
+  defp retry_subscribe(state, reason) do
+    {timeout, state} = Map.get_and_update(state, :backoff, &Backoff.next/1)
+
+    Logger.warning(
+      "[Tortoise311] #{reason}: #{inspect(summarize_state(state))}. Retrying in #{timeout} msecs."
+    )
+
+    Process.send_after(self(), :subscribe, timeout)
+    state
   end
 
   defp start_connection_supervisor(opts) do
