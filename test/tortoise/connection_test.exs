@@ -122,7 +122,7 @@ defmodule Tortoise311.ConnectionTest do
         handler: {Tortoise311.Handler.Default, []}
       ]
 
-      assert {:ok, pid} = Connection.start_link(opts)
+      assert {:ok, _pid} = Connection.start_link(opts)
 
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
@@ -144,7 +144,7 @@ defmodule Tortoise311.ConnectionTest do
         handler: {Tortoise311.Handler.Default, []}
       ]
 
-      assert {:ok, pid} = Connection.start_link(opts)
+      assert {:ok, _pid} = Connection.start_link(opts)
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
     end
@@ -165,7 +165,7 @@ defmodule Tortoise311.ConnectionTest do
         handler: {Tortoise311.Handler.Default, []}
       ]
 
-      assert {:ok, pid} = Connection.start_link(opts)
+      assert {:ok, _pid} = Connection.start_link(opts)
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
     end
@@ -186,7 +186,7 @@ defmodule Tortoise311.ConnectionTest do
         handler: {Tortoise311.Handler.Default, []}
       ]
 
-      assert {:ok, pid} = Connection.start_link(opts)
+      assert {:ok, _pid} = Connection.start_link(opts)
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
     end
@@ -207,7 +207,7 @@ defmodule Tortoise311.ConnectionTest do
         handler: {Tortoise311.Handler.Default, []}
       ]
 
-      assert {:ok, pid} = Connection.start_link(opts)
+      assert {:ok, _pid} = Connection.start_link(opts)
       assert_receive {ScriptedMqttServer, {:received, ^connect}}
       assert_receive {ScriptedMqttServer, :completed}
     end
