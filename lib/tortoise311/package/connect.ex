@@ -14,6 +14,7 @@ defmodule Tortoise311.Package.Connect do
             clean_session: boolean(),
             keep_alive: non_neg_integer(),
             client_id: Tortoise311.client_id(),
+            discriminator: atom(),
             will: Package.Publish.t() | nil
           }
 
@@ -26,6 +27,7 @@ defmodule Tortoise311.Package.Connect do
             clean_session: true,
             keep_alive: 60,
             client_id: nil,
+            discriminator: nil,
             will: nil
 
   @spec decode(binary()) :: t
@@ -100,6 +102,10 @@ defmodule Tortoise311.Package.Connect do
     def encode(%Package.Connect{client_id: client_id} = t)
         when is_atom(client_id) do
       encode(%Package.Connect{t | client_id: Atom.to_string(client_id)})
+    end
+
+    def encode(%Package.Connect{client_id: {client_id, _discriminator}} = t) do
+      encode(%Package.Connect{t | client_id: client_id})
     end
 
     defp protocol_header(%{protocol: protocol, protocol_version: version}) do
