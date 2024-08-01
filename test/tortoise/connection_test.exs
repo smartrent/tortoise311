@@ -62,7 +62,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, _pid} = Connection.start_link(opts)
@@ -89,7 +90,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, _pid} = Connection.start_link(opts)
@@ -119,7 +121,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, pid} = Connection.start_link(opts)
@@ -141,7 +144,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, pid} = Connection.start_link(opts)
@@ -162,7 +166,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, pid} = Connection.start_link(opts)
@@ -183,7 +188,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, pid} = Connection.start_link(opts)
@@ -204,7 +210,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, pid} = Connection.start_link(opts)
@@ -242,7 +249,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       # connection
@@ -304,7 +312,8 @@ defmodule Tortoise311.ConnectionTest do
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
         handler: {Tortoise311.Handler.Default, []},
-        subscriptions: subscribe
+        subscriptions: subscribe,
+        first_connect_delay: 0
       ]
 
       assert {:ok, _pid} = Connection.start_link(opts)
@@ -440,7 +449,8 @@ defmodule Tortoise311.ConnectionTest do
                  client_id: client_id,
                  server: {ScriptedTransport, host: ~c"localhost", port: 1883},
                  backoff: [min_interval: 1],
-                 handler: {Tortoise311.Handler.Logger, []}
+                 handler: {Tortoise311.Handler.Logger, []},
+                 first_connect_delay: 0
                )
 
       assert_receive {ScriptedTransport, {:refute_connection, ^refusal}}
@@ -484,7 +494,8 @@ defmodule Tortoise311.ConnectionTest do
                  client_id: client_id,
                  server: {ScriptedTransport, host: ~c"localhost", port: 1883},
                  backoff: [min_interval: 0],
-                 handler: {Tortoise311.Handler.Logger, []}
+                 handler: {Tortoise311.Handler.Logger, []},
+                 first_connect_delay: 0
                )
 
       assert_receive {ScriptedTransport, :connected}
@@ -514,7 +525,8 @@ defmodule Tortoise311.ConnectionTest do
                Tortoise311.Connection.start_link(
                  client_id: client_id,
                  server: {ScriptedTransport, host: ~c"localhost", port: 1883},
-                 handler: {Tortoise311.Handler.Logger, []}
+                 handler: {Tortoise311.Handler.Logger, []},
+                 first_connect_delay: 0
                )
 
       assert_receive {ScriptedTransport, :connected}
@@ -544,7 +556,8 @@ defmodule Tortoise311.ConnectionTest do
                  client_id: client_id,
                  server: {ScriptedTransport, host: ~c"localhost", port: 1883},
                  backoff: [min_interval: 1],
-                 handler: {Tortoise311.Handler.Logger, []}
+                 handler: {Tortoise311.Handler.Logger, []},
+                 first_connect_delay: 0
                )
 
       assert_receive {ScriptedTransport, {:refute_connection, ^refusal}}
@@ -572,7 +585,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, _pid} = Connection.start_link(opts)
@@ -596,7 +610,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, _pid} = Connection.start_link(opts)
@@ -628,7 +643,8 @@ defmodule Tortoise311.ConnectionTest do
       opts = [
         client_id: client_id,
         server: {Tortoise311.Transport.Tcp, [host: ip, port: port]},
-        handler: {Tortoise311.Handler.Default, []}
+        handler: {Tortoise311.Handler.Default, []},
+        first_connect_delay: 0
       ]
 
       assert {:ok, pid} = Connection.start_link(opts)
