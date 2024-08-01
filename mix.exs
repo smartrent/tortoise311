@@ -8,20 +8,14 @@ defmodule Tortoise311.MixProject do
     [
       app: :tortoise311,
       version: @version,
-      elixir: "~> 1.12",
+      elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
       deps: deps(),
       dialyzer: dialyzer(),
       docs: docs(),
-      test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
-        coveralls: :test,
-        "coveralls.detail": :test,
-        "coveralls.html": :test,
-        "coveralls.json": :test,
-        "coveralls.post": :test,
         docs: :docs,
         "hex.publish": :docs,
         "hex.build": :docs
@@ -44,8 +38,7 @@ defmodule Tortoise311.MixProject do
     [
       {:gen_state_machine, "~> 2.0 or ~> 3.0"},
       {:telemetry, "~> 1.0"},
-      {:dialyxir, "~> 1.3.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.16.1", only: :test},
+      {:dialyxir, "~> 1.3", only: :dev, runtime: false},
       {:ex_doc, "~> 0.19", only: :docs, runtime: false},
       {:ct_helper, github: "ninenines/ct_helper", only: :test},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
