@@ -13,6 +13,7 @@ defmodule Tortoise311.Package.Connect do
             password: binary() | nil,
             clean_session: boolean(),
             keep_alive: non_neg_integer(),
+            keep_alive_timeout: non_neg_integer(),
             client_id: Tortoise311.client_id(),
             will: Package.Publish.t() | nil
           }
@@ -25,6 +26,7 @@ defmodule Tortoise311.Package.Connect do
             password: nil,
             clean_session: true,
             keep_alive: 60,
+            keep_alive_timeout: 5000,
             client_id: nil,
             will: nil
 

@@ -22,6 +22,7 @@ defmodule Tortoise311.Connection do
     :backoff,
     :subscriptions,
     :keep_alive,
+    :keep_alive_timeout,
     :opts,
     :handler
   ]
@@ -39,6 +40,7 @@ defmodule Tortoise311.Connection do
                | {:user_name, String.t()}
                | {:password, String.t()}
                | {:keep_alive, non_neg_integer()}
+               | {:keep_alive_timeout, non_neg_integer()}
                | {:will, Tortoise311.Package.Publish.t()}
                | {:subscriptions,
                   [{Tortoise311.topic_filter(), Tortoise311.qos()}]
@@ -57,6 +59,7 @@ defmodule Tortoise311.Connection do
       user_name: Keyword.get(connection_opts, :user_name),
       password: Keyword.get(connection_opts, :password),
       keep_alive: Keyword.get(connection_opts, :keep_alive, 60),
+      keep_alive_timeout: Keyword.get(connection_opts, :keep_alive_timeout, 5) * 1000,
       will: Keyword.get(connection_opts, :will),
       # if we re-spawn from here it means our state is gone
       clean_session: Keyword.get(connection_opts, :clean_session, true)
@@ -493,7 +496,7 @@ defmodule Tortoise311.Connection do
   end
 
   def handle_info(:ping, %State{} = state) do
-    case Controller.ping_sync(state.connect.client_id, 5000) do
+    case Controller.ping_sync(state.connect.client_id, state.connect.keep_alive_timeout) do
       {:ok, round_trip_time} ->
         Events.dispatch(state.connect.client_id, :ping_response, round_trip_time)
         state = reset_keep_alive(state)
