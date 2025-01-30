@@ -26,7 +26,7 @@ defmodule Tortoise311.Package.Connect do
             password: nil,
             clean_session: true,
             keep_alive: 60,
-            keep_alive_timeout: 5000,
+            keep_alive_timeout: 15_000,
             client_id: nil,
             will: nil
 
