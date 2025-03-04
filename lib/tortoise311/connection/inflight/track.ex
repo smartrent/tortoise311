@@ -230,7 +230,7 @@ defmodule Tortoise311.Connection.Inflight.Track do
         ]
       }) do
     result =
-      List.zip([topics, acks])
+      Enum.zip([topics, acks])
       |> Enum.reduce(%{error: [], warn: [], ok: []}, fn
         {{topic, level}, {:ok, level}}, %{ok: oks} = acc ->
           %{acc | ok: oks ++ [{topic, level}]}
