@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.12.1 - 2025-04-05
+
+* Updates
+  * Add keep_alive_timeout option so library users can adjust the keep_alive response timeout (#60)
+* Fixes
+  * Replaced deprecated `List.zip/1` with `Enum.zip/1` (#61)
+  
+Thank you to those who contributed to this release:
+
+* @greg-freewave
+
 ## 0.12.0 - 2024-08-01
 
 - Cap the max reconnect rate by delaying before the first connect
