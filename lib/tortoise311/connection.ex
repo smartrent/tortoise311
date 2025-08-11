@@ -407,8 +407,7 @@ defmodule Tortoise311.Connection do
     # Apply a short delay before connecting to limit the max rate of reconnects
     # if the GenServer crashes. The delay is jittered by 50% of its value. The
     # default is 1 second.
-    delay = Keyword.get(state.opts, :first_connect_delay, 1000)
-    delay_with_jitter = round(delay * (1.0 + (:rand.uniform() - 0.5)))
+    delay_with_jitter = first_connect_delay_with_jitter(state)
 
     Process.send_after(self(), :connect, delay_with_jitter)
 
@@ -529,8 +528,15 @@ defmodule Tortoise311.Connection do
         {:noreply, %State{state | status: status}}
 
       :down ->
-        Logger.info("[Tortoise311] Connection went down. Reconnecting.")
-        send(self(), :connect)
+        # Try to reconnect after the same jittered delay as for a first connect
+        # This should help avoid excessive numbers of connects when network access is flapping
+        delay_with_jitter = first_connect_delay_with_jitter(state)
+
+        Logger.info(
+          "[Tortoise311] Connection went down. Reconnecting after #{delay_with_jitter}."
+        )
+
+        Process.send_after(self(), :connect, delay_with_jitter)
         {:noreply, %State{state | status: status}}
     end
   end
@@ -590,6 +596,12 @@ defmodule Tortoise311.Connection do
   end
 
   # Helpers
+
+  defp first_connect_delay_with_jitter(state) do
+    delay = Keyword.get(state.opts, :first_connect_delay, 1000)
+    round(delay * (1.0 + (:rand.uniform() - 0.5)))
+  end
+
   defp handle_suback_result(%{:error => []} = results, %State{} = state) do
     subscriptions = Enum.into(results[:ok], state.subscriptions)
     {:ok, %State{state | subscriptions: subscriptions}}
