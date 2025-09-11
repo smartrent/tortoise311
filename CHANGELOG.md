@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.12.2 - 2025-09-11
+
+* Fixes
+  * Delay and jitter connecting on connection down to prevent excessive reconnects when network access is flapping (#64)
+
 ## v0.12.1 - 2025-04-05
 
 * Updates
