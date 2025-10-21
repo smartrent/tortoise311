@@ -14,13 +14,12 @@ defmodule Tortoise311.MixProject do
       package: package(),
       deps: deps(),
       dialyzer: dialyzer(),
-      docs: docs(),
-      preferred_cli_env: [
-        docs: :docs,
-        "hex.publish": :docs,
-        "hex.build": :docs
-      ]
+      docs: docs()
     ]
+  end
+
+  def cli do
+    [preferred_envs: [docs: :docs, "hex.publish": :docs, "hex.build": :docs]]
   end
 
   defp description() do
