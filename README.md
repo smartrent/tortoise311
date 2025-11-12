@@ -17,8 +17,7 @@ Amongst other things Tortoise311 supports:
 * Publishing and subscribing to topics of QoS 0, 1, and 2
 * Connections support last will message
 * Connecting via TCP and SSL
-* The fundamentals are there, but some of the API's might change in
-* the near future
+* The fundamentals are there, but some of the API's might change in the near future
 * A PubSub system where one can listen to system events. For now connection status and ping response times can be subscribed for statistics and administrative purposes.
 
 Most of the public facing interface should be in the `Tortoise311`
