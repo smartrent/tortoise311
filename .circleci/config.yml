@@ -1,7 +1,7 @@
 version: 2.1
 
 latest: &latest
-  pattern: "^1.18.*-erlang-27.*$"
+  pattern: "^1.19.*-erlang-28.*$"
 
 tags: &tags
   [

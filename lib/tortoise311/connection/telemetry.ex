@@ -51,7 +51,7 @@ defmodule Tortoise311.Connection.Telemetry do
     Tortoise311.Registry.via_name(__MODULE__, client_id)
   end
 
-  defp capture_telemetry(state) do
+  defp capture_telemetry(%State{} = state) do
     client_id = state.client_id
     registered_name = Tortoise311.Registry.via_name(Tortoise311.Connection, client_id)
 

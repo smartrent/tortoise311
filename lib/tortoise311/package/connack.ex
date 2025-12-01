@@ -13,7 +13,7 @@ defmodule Tortoise311.Package.Connack do
           | :bad_user_name_or_password
           | :not_authorized
 
-  @opaque t :: %__MODULE__{
+  @type t :: %__MODULE__{
             __META__: Package.Meta.t(),
             session_present: boolean(),
             status: status() | nil
