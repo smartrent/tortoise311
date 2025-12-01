@@ -202,7 +202,7 @@ defmodule Tortoise311.Connection.Inflight do
     :keep_state_and_data
   end
 
-  def handle_event(:cast, {:outgoing, caller, package}, _state, data) do
+  def handle_event(:cast, {:outgoing, caller, package}, _state, %State{} = data) do
     {:ok, package} = assign_identifier(package, data.pending)
     track = Track.create({:negative, caller}, package)
 
