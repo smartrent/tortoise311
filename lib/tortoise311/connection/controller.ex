@@ -128,7 +128,7 @@ defmodule Tortoise311.Connection.Controller do
 
   def handle_cast(_, %State{status: :stopped} = state), do: {:noreply, state}
 
-  def handle_cast(:stop, state), do: {:noreply, %State{state | status: :stopped}}
+  def handle_cast(:stop, %State{} = state), do: {:noreply, %State{state | status: :stopped}}
 
   def handle_cast({:incoming, <<package::binary>>}, state) do
     package
@@ -143,7 +143,7 @@ defmodule Tortoise311.Connection.Controller do
     handle_package(package, state)
   end
 
-  def handle_cast({:ping, caller}, state) do
+  def handle_cast({:ping, caller}, %State{} = state) do
     with {:ok, {transport, socket}} <- Connection.connection(state.client_id) do
       time = System.monotonic_time(:microsecond)
       apply(transport, :send, [socket, Package.encode(%Package.Pingreq{})])
@@ -203,7 +203,7 @@ defmodule Tortoise311.Connection.Controller do
   @impl GenServer
   def handle_info(_, %State{status: :stopped} = state), do: {:noreply, state}
 
-  def handle_info({:next_action, {:subscribe, topic, opts} = action}, state) do
+  def handle_info({:next_action, {:subscribe, topic, opts} = action}, %State{} = state) do
     {qos, opts} = Keyword.pop_first(opts, :qos, 0)
 
     case Tortoise311.Connection.subscribe(state.client_id, [{topic, qos}], opts) do
@@ -213,7 +213,7 @@ defmodule Tortoise311.Connection.Controller do
     end
   end
 
-  def handle_info({:next_action, {:unsubscribe, topic} = action}, state) do
+  def handle_info({:next_action, {:unsubscribe, topic} = action}, %State{} = state) do
     case Tortoise311.Connection.unsubscribe(state.client_id, topic) do
       {:ok, ref} ->
         updated_awaiting = Map.put_new(state.awaiting, ref, action)
@@ -239,7 +239,7 @@ defmodule Tortoise311.Connection.Controller do
     end
   end
 
-  def handle_info({{Tortoise311, client_id}, ref, result}, %{client_id: client_id} = state) do
+  def handle_info({{Tortoise311, client_id}, ref, result}, %State{client_id: client_id} = state) do
     case {result, Map.pop(state.awaiting, ref)} do
       {_, {nil, _}} ->
         Logger.warning("Unexpected async result")

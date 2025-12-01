@@ -150,7 +150,12 @@ defmodule Tortoise311.Connection.Receiver do
     :keep_state_and_data
   end
 
-  def handle_event({:call, from}, {:handle_socket, transport, socket}, :disconnected, data) do
+  def handle_event(
+        {:call, from},
+        {:handle_socket, transport, socket},
+        :disconnected,
+        %State{} = data
+      ) do
     new_state = {:connected, :receiving_fixed_header}
 
     next_actions = [

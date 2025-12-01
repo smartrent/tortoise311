@@ -323,7 +323,7 @@ defmodule Tortoise311.Handler do
                | {:publish, Tortoise311.Package.Publish.t()}
                | {:connection, :up | :down}
                | {:terminate, reason :: term()}
-  def execute(handler, :init) do
+  def execute(%__MODULE__{} = handler, :init) do
     case apply(handler.module, :init, [handler.initial_args]) do
       {:ok, initial_state} ->
         {:ok, %__MODULE__{handler | state: initial_state}}
@@ -410,15 +410,15 @@ defmodule Tortoise311.Handler do
   end
 
   # handle the user defined return from the callback
-  defp handle_result({:ok, updated_state}, handler) do
+  defp handle_result({:ok, updated_state}, %__MODULE__{} = handler) do
     {:ok, %__MODULE__{handler | state: updated_state}}
   end
 
-  defp handle_result({{:ok, answer}, updated_state}, handler) do
+  defp handle_result({{:ok, answer}, updated_state}, %__MODULE__{} = handler) do
     {{:ok, answer}, %__MODULE__{handler | state: updated_state}}
   end
 
-  defp handle_result({:ok, updated_state, next_actions}, handler)
+  defp handle_result({:ok, updated_state, next_actions}, %__MODULE__{} = handler)
        when is_list(next_actions) do
     case Enum.split_with(next_actions, &valid_next_action?/1) do
       {next_actions, []} ->

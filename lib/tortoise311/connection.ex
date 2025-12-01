@@ -517,7 +517,7 @@ defmodule Tortoise311.Connection do
   # react to connection status change events
   def handle_info(
         {{Tortoise311, client_id}, :status, status},
-        %{client_id: client_id, status: current} = state
+        %State{client_id: client_id, status: current} = state
       ) do
     case status do
       ^current ->
@@ -578,7 +578,7 @@ defmodule Tortoise311.Connection do
     end
   end
 
-  def handle_cast({:unsubscribe, {caller_pid, ref}, unsubscribe, opts}, state) do
+  def handle_cast({:unsubscribe, {caller_pid, ref}, unsubscribe, opts}, %State{} = state) do
     client_id = state.connect.client_id
     timeout = Keyword.get(opts, :timeout, 5000)
 
@@ -589,7 +589,7 @@ defmodule Tortoise311.Connection do
 
       unsubbed ->
         topics = Keyword.drop(state.subscriptions.topics, unsubbed)
-        subscriptions = %Package.Subscribe{state.subscriptions | topics: topics}
+        subscriptions = %{state.subscriptions | topics: topics}
         send(caller_pid, {{Tortoise311, client_id}, ref, :ok})
         {:noreply, %State{state | subscriptions: subscriptions}}
     end
@@ -632,7 +632,7 @@ defmodule Tortoise311.Connection do
     %State{state | keep_alive: nil}
   end
 
-  defp maybe_update_last_will(%State{connect: connect, handler: handler} = state) do
+  defp maybe_update_last_will(%State{connect: %Connect{} = connect, handler: handler} = state) do
     if function_exported?(handler.module, :last_will, 1) do
       {{:ok, last_will}, _updated_handler} = Handler.execute(handler, :last_will)
 
@@ -697,7 +697,10 @@ defmodule Tortoise311.Connection do
     end
   end
 
-  defp init_connection(socket, %State{opts: opts, server: transport, connect: connect} = state) do
+  defp init_connection(
+         socket,
+         %State{opts: opts, server: transport, connect: %Connect{} = connect} = state
+       ) do
     connection = {transport.type, socket}
     :ok = start_connection_supervisor(opts)
     :ok = Receiver.handle_socket(connect.client_id, connection)
