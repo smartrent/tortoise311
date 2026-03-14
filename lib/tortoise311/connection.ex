@@ -692,6 +692,10 @@ defmodule Tortoise311.Connection do
             :ok = transport.close(socket)
             {:error, :connection_timeout}
 
+          {:error, :closed} ->
+            :ok = transport.close(socket)
+            {:error, :server_closed_connection}
+
           {:error, _reason} = error ->
             :ok = transport.close(socket)
             error
