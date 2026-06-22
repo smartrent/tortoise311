@@ -81,7 +81,7 @@ defmodule Tortoise311.Package.Connect do
   defp decode_length_prefixed(<<>>), do: []
 
   defp decode_length_prefixed(<<length::big-integer-size(16), payload::binary>>) do
-    <<item::binary-size(length), rest::binary>> = payload
+    <<item::binary-size(^length), rest::binary>> = payload
     [item] ++ decode_length_prefixed(rest)
   end
 

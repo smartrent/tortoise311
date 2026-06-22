@@ -64,12 +64,12 @@ defmodule Tortoise311.Package.Publish do
   end
 
   defp decode_message(<<topic_length::big-integer-size(16), msg::binary>>) do
-    <<topic::binary-size(topic_length), payload::binary>> = msg
+    <<topic::binary-size(^topic_length), payload::binary>> = msg
     {topic, nullify(payload)}
   end
 
   defp decode_message_with_id(<<topic_length::big-integer-size(16), msg::binary>>) do
-    <<topic::binary-size(topic_length), identifier::big-integer-size(16), payload::binary>> = msg
+    <<topic::binary-size(^topic_length), identifier::big-integer-size(16), payload::binary>> = msg
     {topic, identifier, nullify(payload)}
   end
 

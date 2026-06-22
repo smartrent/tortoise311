@@ -38,7 +38,7 @@ defmodule Tortoise311.Package.Subscribe do
   defp decode_topics(<<>>), do: []
 
   defp decode_topics(<<length::big-integer-size(16), rest::binary>>) do
-    <<topic::binary-size(length), return_code::integer-size(8), rest::binary>> = rest
+    <<topic::binary-size(^length), return_code::integer-size(8), rest::binary>> = rest
     [{topic, return_code}] ++ decode_topics(rest)
   end
 

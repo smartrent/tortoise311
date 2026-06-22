@@ -159,13 +159,10 @@ defmodule Tortoise311.Connection.Controller do
         {:result, {Package.Subscribe, subacks}},
         %State{handler: handler} = state
       ) do
-    if state.status != :stopped do
-      case Handler.execute(handler, {:subscribe, subacks}) do
-        {:ok, updated_handler} ->
-          {:noreply, %State{state | handler: updated_handler}}
-      end
-    else
-      {:noreply, state}
+    # No need to check for status :stopped; type inference says it can not happen
+    case Handler.execute(handler, {:subscribe, subacks}) do
+      {:ok, updated_handler} ->
+        {:noreply, %State{state | handler: updated_handler}}
     end
   end
 
@@ -173,13 +170,10 @@ defmodule Tortoise311.Connection.Controller do
         {:result, {Package.Unsubscribe, unsubacks}},
         %State{handler: handler} = state
       ) do
-    if state.status != :stopped do
-      case Handler.execute(handler, {:unsubscribe, unsubacks}) do
-        {:ok, updated_handler} ->
-          {:noreply, %State{state | handler: updated_handler}}
-      end
-    else
-      {:noreply, state}
+    # No need to check for status :stopped; type inference says it can not happen
+    case Handler.execute(handler, {:unsubscribe, unsubacks}) do
+      {:ok, updated_handler} ->
+        {:noreply, %State{state | handler: updated_handler}}
     end
   end
 
@@ -190,13 +184,10 @@ defmodule Tortoise311.Connection.Controller do
         {:onward, %Package.Publish{qos: 2, dup: false} = publish},
         %State{handler: handler} = state
       ) do
-    if state.status != :stopped do
-      case Handler.execute(handler, {:publish, publish}) do
-        {:ok, updated_handler} ->
-          {:noreply, %State{state | handler: updated_handler}}
-      end
-    else
-      {:noreply, state}
+    # No need to check for status :stopped; type inference says it can not happen
+    case Handler.execute(handler, {:publish, publish}) do
+      {:ok, updated_handler} ->
+        {:noreply, %State{state | handler: updated_handler}}
     end
   end
 

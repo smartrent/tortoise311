@@ -41,7 +41,7 @@ defmodule Tortoise311.Package.Unsubscribe do
   defp decode_topics(<<>>), do: []
 
   defp decode_topics(<<length::big-integer-size(16), rest::binary>>) do
-    <<topic::binary-size(length), rest::binary>> = rest
+    <<topic::binary-size(^length), rest::binary>> = rest
     [topic] ++ decode_topics(rest)
   end
 

@@ -105,7 +105,7 @@ defmodule Tortoise311.Connection.Receiver do
         %State{buffer: buffer} = data
       )
       when byte_size(buffer) >= length do
-    <<package::binary-size(length), rest::binary>> = buffer
+    <<package::binary-size(^length), rest::binary>> = buffer
     next_state = {:connected, :receiving_fixed_header}
 
     next_actions = [
