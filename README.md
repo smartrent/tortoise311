@@ -27,6 +27,15 @@ your own issues if something is confusing or broken.
 
 We greatly appreciate all feedback and help.
 
+## Development Setup
+
+Install [mise](https://mise.jdx.dev) (requires >= 2026.4.8):
+
+```sh
+brew install mise
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+```
+
 ## Example
 
 A supervised connection can be started like this:
