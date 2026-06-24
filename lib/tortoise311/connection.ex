@@ -660,23 +660,47 @@ defmodule Tortoise311.Connection do
   defp do_connect(server, %Connect{} = connect) do
     %Transport{type: transport, host: host, port: port, opts: opts} = server
 
-    with {:ok, socket} <- transport.connect(host, port, opts, 10000),
-         :ok = transport.send(socket, Package.encode(connect)),
-         {:ok, packet} <- transport.recv(socket, 4, 5000) do
-      try do
-        case Package.decode(packet) do
-          %Connack{status: :accepted} = connack ->
+    case transport.connect(host, port, opts, 10000) do
+      {:ok, socket} ->
+        result =
+          with :ok <- transport.send(socket, Package.encode(connect)),
+               {:ok, packet} <- transport.recv(socket, 4, 5000) do
+            try do
+              case Package.decode(packet) do
+                %Connack{status: :accepted} = connack ->
+                  {connack, socket}
+
+                %Connack{status: {:refused, _reason}} = connack ->
+                  connack
+              end
+            catch
+              :error, {:badmatch, _unexpected} ->
+                violation = %{expected: Connect, got: packet}
+                {:error, {:protocol_violation, violation}}
+            end
+          end
+
+        case result do
+          {%Connack{} = connack, ^socket} ->
             {connack, socket}
 
           %Connack{status: {:refused, _reason}} = connack ->
+            :ok = transport.close(socket)
             connack
+
+          {:error, :timeout} ->
+            :ok = transport.close(socket)
+            {:error, :connection_timeout}
+
+          {:error, :closed} ->
+            :ok = transport.close(socket)
+            {:error, :server_closed_connection}
+
+          {:error, _reason} = error ->
+            :ok = transport.close(socket)
+            error
         end
-      catch
-        :error, {:badmatch, _unexpected} ->
-          violation = %{expected: Connect, got: packet}
-          {:error, {:protocol_violation, violation}}
-      end
-    else
+
       {:error, :econnrefused} ->
         {:error, {:connection_refused, host, port}}
 
