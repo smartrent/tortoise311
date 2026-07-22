@@ -218,6 +218,7 @@ defmodule Tortoise311.Connection do
       {{Tortoise311, ^client_id}, ^ref, result} -> result
     after
       timeout ->
+        Logger.warning("[Tortoise311] Connection - Subscription to #{inspect topics} timed out ")
         {:error, :timeout}
     end
   end
