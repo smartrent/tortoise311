@@ -218,7 +218,7 @@ defmodule Tortoise311.Connection do
       {{Tortoise311, ^client_id}, ^ref, result} -> result
     after
       timeout ->
-        Logger.warning("[Tortoise311] Connection - Subscription to #{inspect topics} timed out ")
+        Logger.warning("[Tortoise311] Connection - Subscription to #{inspect(topics)} timed out ")
         {:error, :timeout}
     end
   end
@@ -540,6 +540,20 @@ defmodule Tortoise311.Connection do
         Process.send_after(self(), :connect, delay_with_jitter)
         {:noreply, %State{state | status: status}}
     end
+  end
+
+  # An async subscription/unsubscription timed out and was retried.
+  # This late response can be safely discarded
+  def handle_info(
+        {{Tortoise311, client_id}, ref, result},
+        %State{client_id: client_id} = state
+      )
+      when is_reference(ref) do
+    Logger.info(
+      "[Tortoise311] Connection - Ignoring late results #{inspect(result)} from subscribing/unsubscribing"
+    )
+
+    {:noreply, state}
   end
 
   @impl GenServer
