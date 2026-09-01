@@ -1,7 +1,7 @@
 defmodule Tortoise311.MixProject do
   use Mix.Project
 
-  @version "0.12.2"
+  @version "0.12.3"
   @source_url "https://github.com/smartrent/tortoise311"
 
   def project do
@@ -48,7 +48,7 @@ defmodule Tortoise311.MixProject do
     [
       name: "tortoise311",
       maintainers: ["Jean-Francois Cloutier"],
-      licenses: ["Apache 2.0"],
+      licenses: ["Apache-2.0"],
       files: ["lib", "mix.exs", "README*", "CHANGELOG*", "LICENSE*"],
       links: %{"GitHub" => @source_url}
     ]
