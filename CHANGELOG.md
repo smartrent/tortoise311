@@ -1,6 +1,18 @@
 # Changelog
 
-## v0.12.2 - 2025-09-11
+### v0.12.3 - 2026-09-01
+
+* Fixes
+  * Ignore late results instead of crashing the connection (#75)
+  * Form iolist directly instead of reallocating it in variable_length_encode() (#71)
+  * Support Elixir 1.19 and OTP 28 (#69)
+  * Fix formatting in README.md (#68)
+
+* Updates
+  * [TECH-8851] Migrate from asdf to mise (#74)
+  * Update CircleCI config with new Erlang versions (#66)
+
+# v0.12.2 - 2025-09-11
 
 * Fixes
   * Delay and jitter connecting on connection down to prevent excessive reconnects when network access is flapping (#64)
