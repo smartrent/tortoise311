@@ -78,7 +78,7 @@ defmodule Tortoise311 do
   it is really easy to hit the maximum byte limit. Solving this is
   easy, just add a `:` before the client id such as `:Example`.
   """
-  @type client_id() :: atom() | String.t()
+  @type client_id() :: atom() | String.t() | {String.t(), atom()}
 
   @typedoc """
   A 16-bit number identifying a message in a message exchange.
