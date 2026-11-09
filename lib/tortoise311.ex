@@ -176,7 +176,7 @@ defmodule Tortoise311 do
   The payload will be `nil` if there is no payload. This is done to
   distinct between a zero byte binary and an empty payload.
   """
-  @type payload() :: iolist() | nil
+  @type payload() :: iodata() | nil
 
   @doc """
   Publish a message to the MQTT broker.
